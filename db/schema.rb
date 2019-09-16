@@ -10,19 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_16_191217) do
+ActiveRecord::Schema.define(version: 2019_09_16_220535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "ingredients", force: :cascade do |t|
+    t.text "items", default: [], null: false, array: true
+    t.string "main", null: false
+    t.boolean "df", default: false
+    t.boolean "gf", default: false
+    t.boolean "nf", default: false
+    t.boolean "vegan", default: false
+    t.boolean "veget", default: false
+    t.integer "recipe_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["df"], name: "index_ingredients_on_df"
+    t.index ["gf"], name: "index_ingredients_on_gf"
+    t.index ["main"], name: "index_ingredients_on_main"
+    t.index ["nf"], name: "index_ingredients_on_nf"
+    t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
+    t.index ["vegan"], name: "index_ingredients_on_vegan"
+    t.index ["veget"], name: "index_ingredients_on_veget"
+  end
 
   create_table "recipes", force: :cascade do |t|
     t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "url_id", null: false
-    t.text "ingreds", default: [], array: true
     t.text "directions", default: [], array: true
     t.string "img_src", null: false
+    t.text "keywords", default: [], array: true
+    t.string "main", null: false
+    t.integer "rating"
+    t.integer "num_ingred", null: false
+    t.integer "num_dir", null: false
+    t.index ["main"], name: "index_recipes_on_main"
+    t.index ["num_dir"], name: "index_recipes_on_num_dir"
+    t.index ["num_ingred"], name: "index_recipes_on_num_ingred"
   end
 
   create_table "urls", force: :cascade do |t|

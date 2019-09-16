@@ -4,23 +4,10 @@ class ScrapersController < ApplicationController
     require 'openssl'
     require 'open-uri'
 
-    # categories = [
-    #   ['salad', 'https://www.allrecipes.com/search/results/?wt=salad&sort=re'],
-    #   ['pasta', 'https://www.allrecipes.com/search/results/?wt=pasta&sort=re'],
-    #   ['chicken', 'https://www.allrecipes.com/search/results/?wt=chicken&sort=re'],
-    #   ['vegan', 'https://www.allrecipes.com/search/results/?wt=vegan&sort=re'],
-    #   ['fish', 'https://www.allrecipes.com/search/results/?wt=fish&sort=re']
-    # ]
-    #   doc = Nokogiri::HTML(open('https://www.allrecipes.com/recipes/96/salad/', :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
-
     @categories = ['salad', 'pasta', 'chicken', 'vegan', 'fish'].each do |categ|
       doc = Nokogiri::HTML(open("https://www.allrecipes.com/search/results/?wt=#{categ}&sort=re", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
 
       urls = doc.css('div.grid-card-image-container a').map { |link| link['href'] }
-      # @urls = doc.css('div.grid-card-image-container a').each do |url|
-      #   href = url['href']
-      #   src = url
-
 
       urls.each do |url|
         new_url = Url.new(url: url, category: categ)
@@ -43,7 +30,9 @@ class ScrapersController < ApplicationController
     urls.each do |url|
       doc = Nokogiri::HTML(open(url.url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
       
-      title = doc.css('h1').text
+      fillers = ['with', 'to', 'for', 'and', 'very','yummy', 'awesome', 'great', 'very', 'best','amazing', 'the', 'on', 'to']
+      title = doc.css('h1').text.downcase
+      words = title.split(' ').reject { |word| fillers.include?(word)}
 
       if doc.css('span.recipe-ingred_txt')
         selector = doc.css('span.recipe-ingred_txt')
@@ -58,6 +47,7 @@ class ScrapersController < ApplicationController
       
       ingreds = selector.map { |span| span.text }
       ingreds = ingreds.reject { |el| el.length <= 1 || el.include?('ingredients') }
+      num_ingred = ingreds.length 
 
       directions = selector2.map { |span| span.text }
       directions = directions.reject { |el| el.length <= 1 }
@@ -69,11 +59,18 @@ class ScrapersController < ApplicationController
         next 
       end
 
-      recipe = Recipe.new({title: title, url_id: url.id, ingreds: ingreds, directions: directions, img_src: img_src })
+      recipe = Recipe.new({title: title, url_id: url.id, main: url.category, 
+                          directions: directions, img_src: img_src,
+                          keywords: words, num_ingred: num_ingred, 
+                          num_dir: directions.length })
       
       if recipe.save
+        
+        ingredient = Ingredient.create({items: ingreds, main: url.category,
+                                  recipe_id: recipe.id})
         @recipes << recipe 
       end
+
 
 
     end
