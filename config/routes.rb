@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   root 'scrapers#urlscrap'
 
-  get '/scrapers' => 'scrapers#recipe_scrap'
+  get '/recipescrap' => 'scrapers#recipe_scrap'
 
   get '/urlscrap' => 'scrapers#urlscrap'
 end

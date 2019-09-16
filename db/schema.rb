@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_14_214305) do
+ActiveRecord::Schema.define(version: 2019_09_16_191217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2019_09_14_214305) do
     t.integer "url_id", null: false
     t.text "ingreds", default: [], array: true
     t.text "directions", default: [], array: true
+    t.string "img_src", null: false
   end
 
   create_table "urls", force: :cascade do |t|
