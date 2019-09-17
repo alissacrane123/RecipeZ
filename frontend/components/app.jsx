@@ -10,10 +10,14 @@ import {
 } from 'react-router-dom';
 
 import HomeContainer from './home/home_container';
+import RecipeContainer from './recipes/recipes_index_cont';
 
 const App = () => (
-  <div>
-    <Route exact path="/" component={HomeContainer} />
+  <div id="app">
+    <Switch>
+      <Route path="/search/results" component={RecipeContainer} />
+      <Route exact path="/" component={HomeContainer} />
+    </Switch>
   </div>
 );
 

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import Search from './search';
+import RecipesIndex from './recipes_index';
 
 import { fetchRecipes } from '../../actions/recipe_actions';
 
@@ -12,4 +12,4 @@ const mdp = dispatch => ({
   fetchRecipes: (filters) => dispatch(fetchRecipes(filters))
 })
 
-export default connect(msp, mdp)(Search);
+export default connect(msp, mdp)(RecipesIndex);

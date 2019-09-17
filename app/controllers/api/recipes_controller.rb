@@ -1,7 +1,12 @@
 class Api::RecipesController < ApplicationController
 
   def index
-    @recipes = Recipe.all
+    # debugger
+    search_word = params[:filters][:main].split(' ').first
+    max_ingred = params[:filters][:num_ingred].to_i
+    debugger
+    @recipes = Recipe.where(["main = ? AND num_ingred < ?", search_word, max_ingred])
+    # debugger
 
     # render "api/recipes/recipe"
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_16_220535) do
+ActiveRecord::Schema.define(version: 2019_09_17_163429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,9 +47,13 @@ ActiveRecord::Schema.define(version: 2019_09_16_220535) do
     t.integer "rating"
     t.integer "num_ingred", null: false
     t.integer "num_dir", null: false
+    t.integer "time"
+    t.integer "cal"
+    t.index ["cal"], name: "index_recipes_on_cal"
     t.index ["main"], name: "index_recipes_on_main"
     t.index ["num_dir"], name: "index_recipes_on_num_dir"
     t.index ["num_ingred"], name: "index_recipes_on_num_ingred"
+    t.index ["time"], name: "index_recipes_on_time"
   end
 
   create_table "urls", force: :cascade do |t|

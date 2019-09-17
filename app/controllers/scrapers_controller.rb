@@ -24,7 +24,7 @@ class ScrapersController < ApplicationController
     require 'openssl'
     require 'open-uri'
 
-    urls = Url.all.map { |url| url } 
+    urls = Url.where(["category = ?", "chicken"]) 
 
     @recipes = []
     urls.each do |url|
@@ -52,17 +52,41 @@ class ScrapersController < ApplicationController
       directions = selector2.map { |span| span.text }
       directions = directions.reject { |el| el.length <= 1 }
 
-      img_src = doc.css('img.rec-photo').map { |img| img['src'] }
-      img_src = img_src.is_a?(Array) ? img_src[0] : img_src
+      if doc.css('img.rec-photo').length > 0
+        img_src = doc.css('img.rec-photo').map { |img| img['src'] }
+        img_src = img_src.is_a?(Array) ? img_src[0] : img_src
+      elsif doc.css('div.inner-container > img').length > 0
+        img_src = doc.css('div.inner-container > img').attr('src').value
+      else
+        debugger
+      end
 
-      unless img_src 
+      if doc.css('span.read-in-time')
+        time_arr = doc.css('span.read-in-time').text.downcase.split(' ')
+        time = time_arr.include?('h') ? (time_arr[0].to_i * 60) : time_arr[0].to_i
+      elsif doc.css('div.recipe-meta-item-body')
+        time_arr = ('div.recipe-meta-item-body').text.downcase.split(' ').reject(' ')
+        time = time_arr.include?('h') ? (time_arr[0].to_i * 60) : time_arr[0].to_i
+      else
+        debugger
+      end
+
+
+      # time_arr = doc.css('span.read-in-time').text.downcase.split(' ')
+      # time = time_arr.include?('h') ? (time_arr[0].to_i * 60) : time_arr[0].to_i
+
+      cal = doc.css('span.calorie-count > span:first-child').text
+
+      # debugger
+      unless img_src && time && cal
+        debugger
         next 
       end
 
       recipe = Recipe.new({title: title, url_id: url.id, main: url.category, 
                           directions: directions, img_src: img_src,
                           keywords: words, num_ingred: num_ingred, 
-                          num_dir: directions.length })
+                          num_dir: directions.length, time: time, cal: cal })
       
       if recipe.save
         

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import SearchContainer from '../search/search_container';
+
 class Home extends React.Component {
 
   componentDidMount() {
@@ -9,7 +11,11 @@ class Home extends React.Component {
   render() {
 
     return (
-      <div>Home</div>
+      <div id="home">
+        <section>
+          <SearchContainer />
+        </section>
+      </div>
     )
   }
 }

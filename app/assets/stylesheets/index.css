@@ -1,0 +1,26 @@
+#index {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+#index section:first-child {
+  width: 30%;
+  background-color: #c1c8e4;
+}
+
+#items {
+  width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  padding-right: 3vh;
+}
+
+#items div {	
+    flex: 1 0 25vh;
+    height: 23vh;
+    padding: 15px;
+    margin-left: 3vh;
+    margin-top: 3vh;
+    background: purple;
+}
