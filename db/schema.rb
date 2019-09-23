@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_18_192414) do
+ActiveRecord::Schema.define(version: 2019_09_23_200656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,25 @@ ActiveRecord::Schema.define(version: 2019_09_18_192414) do
     t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
     t.index ["vegan"], name: "index_ingredients_on_vegan"
     t.index ["veget"], name: "index_ingredients_on_veget"
+  end
+
+  create_table "nutritions", force: :cascade do |t|
+    t.string "name"
+    t.text "description", default: [], array: true
+    t.integer "nbd_no"
+    t.integer "grams"
+    t.integer "cals"
+    t.integer "protein"
+    t.integer "fat"
+    t.integer "carbs"
+    t.integer "fiber"
+    t.integer "sugar"
+    t.integer "calcium"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "kind"
+    t.index ["description"], name: "index_nutritions_on_description"
+    t.index ["name"], name: "index_nutritions_on_name"
   end
 
   create_table "recipes", force: :cascade do |t|

@@ -3,8 +3,9 @@ Rails.application.routes.draw do
 
   
 
-  root 'scrapers#urlscrap'
-  # root "static_pages#root"
+  # root 'scrapers#urlscrap'
+  root "static_pages#root"
+  # root "nutrition_scrapers#import"
 
   # get '/urlscrap' => 'scrapers#urlscrap'
   get '/recipescrap' => 'scrapers#recipe_scrap'

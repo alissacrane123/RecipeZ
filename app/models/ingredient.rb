@@ -16,4 +16,6 @@
 #
 
 class Ingredient < ApplicationRecord
+
+  belongs_to :recipe, foreign_key: :recipe_id, class_name: :Recipe
 end

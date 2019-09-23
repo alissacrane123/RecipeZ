@@ -10,10 +10,10 @@ export const receiveRecipes = recipes => {
   }
 }
 
-export const receiveRecipe = recipe => {
+export const receiveRecipe = payload => {
   return {
     type: RECEIVE_RECIPE,
-    recipe
+    payload
   }
 }
 

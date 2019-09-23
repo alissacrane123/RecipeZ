@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import RecipeItem from './recipe_item';
 
@@ -37,4 +38,4 @@ class RecipesIndex extends React.Component {
   }
 }
 
-export default RecipesIndex;
+export default withRouter(RecipesIndex);

@@ -140,10 +140,10 @@ var receiveRecipes = function receiveRecipes(recipes) {
     recipes: recipes
   };
 };
-var receiveRecipe = function receiveRecipe(recipe) {
+var receiveRecipe = function receiveRecipe(payload) {
   return {
     type: RECEIVE_RECIPE,
-    recipe: recipe
+    payload: payload
   };
 };
 var fetchRecipes = function fetchRecipes(filters) {
@@ -250,6 +250,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _recipes_recipes_index_cont__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./recipes/recipes_index_cont */ "./frontend/components/recipes/recipes_index_cont.jsx");
 /* harmony import */ var _navbar_navbar_container__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./navbar/navbar_container */ "./frontend/components/navbar/navbar_container.jsx");
 /* harmony import */ var _modal_modal_container__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modal/modal_container */ "./frontend/components/modal/modal_container.jsx");
+/* harmony import */ var _recipes_recipe_show_cont__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./recipes/recipe_show_cont */ "./frontend/components/recipes/recipe_show_cont.jsx");
+
 
 
 
@@ -262,6 +264,9 @@ var App = function App() {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "app"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_modal_container__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_navbar_navbar_container__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+    path: "/recipe/:recipeId",
+    component: _recipes_recipe_show_cont__WEBPACK_IMPORTED_MODULE_7__["default"]
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "/search/:searchQuery",
     component: _recipes_recipes_index_cont__WEBPACK_IMPORTED_MODULE_4__["default"]
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
@@ -671,27 +676,32 @@ var mdp = function mdp(dispatch) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
 
 
 var RecipeItem = function RecipeItem(props) {
   var recipe = props.recipe; // debugger
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    id: "rec-item"
+    id: "rec-item",
+    onClick: function onClick() {
+      return props.history.push("/recipe/".concat(recipe.id));
+    }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
     src: recipe.img_src,
     alt: ""
   })));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (RecipeItem);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(RecipeItem));
 
 /***/ }),
 
-/***/ "./frontend/components/recipes/recipes_index.jsx":
-/*!*******************************************************!*\
-  !*** ./frontend/components/recipes/recipes_index.jsx ***!
-  \*******************************************************/
+/***/ "./frontend/components/recipes/recipe_show.jsx":
+/*!*****************************************************!*\
+  !*** ./frontend/components/recipes/recipe_show.jsx ***!
+  \*****************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -699,7 +709,6 @@ var RecipeItem = function RecipeItem(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _recipe_item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./recipe_item */ "./frontend/components/recipes/recipe_item.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -717,6 +726,109 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+var RecipeShow =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(RecipeShow, _React$Component);
+
+  function RecipeShow() {
+    _classCallCheck(this, RecipeShow);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(RecipeShow).apply(this, arguments));
+  }
+
+  _createClass(RecipeShow, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      // debugger
+      this.props.fetchRecipe(Number(this.props.recipe_id));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "recipe");
+    }
+  }]);
+
+  return RecipeShow;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (RecipeShow);
+
+/***/ }),
+
+/***/ "./frontend/components/recipes/recipe_show_cont.jsx":
+/*!**********************************************************!*\
+  !*** ./frontend/components/recipes/recipe_show_cont.jsx ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _recipe_show__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./recipe_show */ "./frontend/components/recipes/recipe_show.jsx");
+/* harmony import */ var _actions_recipe_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../actions/recipe_actions */ "./frontend/actions/recipe_actions.js");
+
+
+
+
+var msp = function msp(state, ownProps) {
+  var recipe_id = ownProps.match.params["recipeId"]; // debugger
+
+  return {
+    recipe_id: ownProps.match.params["recipeId"],
+    recipe: state.entities.recipes[recipe_id] // ingredient: state.entities.ingredients
+
+  };
+};
+
+var mdp = function mdp(dispatch) {
+  return {
+    fetchRecipe: function fetchRecipe(id) {
+      return dispatch(Object(_actions_recipe_actions__WEBPACK_IMPORTED_MODULE_2__["fetchRecipe"])(id));
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(msp, mdp)(_recipe_show__WEBPACK_IMPORTED_MODULE_1__["default"]));
+
+/***/ }),
+
+/***/ "./frontend/components/recipes/recipes_index.jsx":
+/*!*******************************************************!*\
+  !*** ./frontend/components/recipes/recipes_index.jsx ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _recipe_item__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./recipe_item */ "./frontend/components/recipes/recipe_item.jsx");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -751,7 +863,7 @@ function (_React$Component) {
       var recipes = this.props.recipes; // recipes = recipes.map { |rec| rec.title };
 
       recipes = recipes.map(function (rec) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_recipe_item__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_recipe_item__WEBPACK_IMPORTED_MODULE_2__["default"], {
           recipe: rec
         });
       });
@@ -766,7 +878,7 @@ function (_React$Component) {
   return RecipesIndex;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
-/* harmony default export */ __webpack_exports__["default"] = (RecipesIndex);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(RecipesIndex));
 
 /***/ }),
 
@@ -1267,12 +1379,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _users_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./users_reducer */ "./frontend/reducers/users_reducer.js");
 /* harmony import */ var _recipes_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./recipes_reducer */ "./frontend/reducers/recipes_reducer.js");
+/* harmony import */ var _ingredients_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ingredients_reducer */ "./frontend/reducers/ingredients_reducer.js");
+
 
 
 
 var entitiesReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   users: _users_reducer__WEBPACK_IMPORTED_MODULE_1__["default"],
-  recipes: _recipes_reducer__WEBPACK_IMPORTED_MODULE_2__["default"]
+  recipes: _recipes_reducer__WEBPACK_IMPORTED_MODULE_2__["default"],
+  ingredients: _ingredients_reducer__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 /* harmony default export */ __webpack_exports__["default"] = (entitiesReducer);
 
@@ -1295,6 +1410,44 @@ var errorsReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"]
   session: _session_errors_reducer__WEBPACK_IMPORTED_MODULE_1__["default"]
 });
 /* harmony default export */ __webpack_exports__["default"] = (errorsReducer);
+
+/***/ }),
+
+/***/ "./frontend/reducers/ingredients_reducer.js":
+/*!**************************************************!*\
+  !*** ./frontend/reducers/ingredients_reducer.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actions_recipe_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/recipe_actions */ "./frontend/actions/recipe_actions.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var ingredientsReducer = function ingredientsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+  var nextState = Object.assign({}, state);
+
+  switch (action.type) {
+    // case RECEIVE_RECIPES:
+    //   // debugger
+    //   return action.recipes;
+    case _actions_recipe_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_RECIPE"]:
+      debugger;
+      return _defineProperty({}, action.payload.ingredient.recipe_id, action.payload.ingredient);
+    // return Object.assign(nextState, newRecipe);
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (ingredientsReducer);
 
 /***/ }),
 
@@ -1357,7 +1510,8 @@ var recipesReducer = function recipesReducer() {
       return action.recipes;
 
     case _actions_recipe_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_RECIPE"]:
-      var newRecipe = _defineProperty({}, action.recipe.id, action.recipe);
+      // debugger
+      var newRecipe = _defineProperty({}, action.payload.recipe.id, action.payload.recipe);
 
       return Object.assign(nextState, newRecipe);
 
