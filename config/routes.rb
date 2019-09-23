@@ -6,15 +6,14 @@ Rails.application.routes.draw do
   root 'scrapers#urlscrap'
   # root "static_pages#root"
 
+  # get '/urlscrap' => 'scrapers#urlscrap'
   get '/recipescrap' => 'scrapers#recipe_scrap'
 
-  get '/urlscrap' => 'scrapers#urlscrap'
 
 
   namespace :api, defaults: {format: :json} do
     resources :recipes, only: [:index, :show, :create, :update, :destroy]
-    
-    # resources :users, only: [:create]
-    # resource :session, only: [:create, :destroy, :show]
+    resources :users, only: [:create]
+    resource :session, only: [:create, :destroy, :show]
   end
 end

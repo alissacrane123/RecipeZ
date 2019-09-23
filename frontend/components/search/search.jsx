@@ -23,7 +23,10 @@ class Search extends React.Component {
     e.preventDefault();
     this.props.fetchRecipes(this.state)
     let query = this.state.main
-    this.props.history.push(`/search/results/${query}`)
+    let num = this.state.num_ingred;
+    // debugger
+    num = typeof num === 'string' ? 0 : num;
+    this.props.history.push(`/search/m=${query}&n=${num}`)
   }
 
   render() {

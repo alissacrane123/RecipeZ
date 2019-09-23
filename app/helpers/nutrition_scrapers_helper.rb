@@ -1,0 +1,2 @@
+module NutritionScrapersHelper
+end

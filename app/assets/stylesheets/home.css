@@ -2,6 +2,14 @@
   box-sizing: border-box;
 }
 
+button, input[type="submit"] {
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 2.5vh;
+}
+
 html, body, main, #app {
   height: 100%;
   width: 100%;

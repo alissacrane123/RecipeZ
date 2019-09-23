@@ -4,10 +4,11 @@ class ScrapersController < ApplicationController
     require 'openssl'
     require 'open-uri'
 
-    @categories = ['salad', 'pasta', 'chicken', 'vegan', 'fish'].each do |categ|
+    # @categories = ['salad', 'pasta', 'chicken', 'vegan', 'fish'].each do |categ|
+    @categories = ['fish'].each do |categ|
       doc = Nokogiri::HTML(open("https://www.allrecipes.com/search/results/?wt=#{categ}&sort=re", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
-
-      urls = doc.css('div.grid-card-image-container a').map { |link| link['href'] }.reject { |url| url.include?('video')}
+      # debugger
+      urls = doc.css('div.grid-card-image-container a').map { |link| link['href'] }
 
       urls.each do |url|
         new_url = Url.new(url: url, category: categ)
@@ -28,6 +29,12 @@ class ScrapersController < ApplicationController
 
     @recipes = []
     urls.each do |url|
+      img_src = ''
+      title = ''
+      ingreds = []
+      directions = []
+      time = 0
+
       next if url.url.include?('video')
 
       doc = Nokogiri::HTML(open(url.url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
@@ -60,25 +67,26 @@ class ScrapersController < ApplicationController
 
       # image_src 
 
+      # debugger
       if doc.css('img.rec-photo').length > 0
         img_src = doc.css('img.rec-photo').map { |img| img['src'] }
         img_src = img_src.is_a?(Array) ? img_src[0] : img_src
       elsif doc.css('div.inner-container > img').length > 0
         img_src = doc.css('div.inner-container > img').attr('src').value
+      elsif doc.css('div.inner-container js-inner-container  image-overlay img').length > 0
+        img_src = doc.css('div.inner-container js-inner-container  image-overlay img').attr('src').value
       else
         debugger
       end
 
       # time
-      # debugger
+
       if doc.css('span.read-in-time')
         time_arr = doc.css('span.read-in-time').text.downcase.split(' ')
         time = time_arr.include?('h') ? (time_arr[0].to_i * 60) : time_arr[0].to_i
-        # debugger
       elsif doc.css('div.recipe-meta-item-body')
         time_arr = doc.css('div.recipe-meta-item-body').select { |el| el.text.include?('h') || el.text.include?('m')}.first.text.split(' ').reject { |el| el == ' ' }
         time = time_arr.include?('h') ? (time_arr[0].to_i * 60) : time_arr[0].to_i
-        # debugger
       else
         debugger
       end
@@ -86,15 +94,13 @@ class ScrapersController < ApplicationController
       ingreds = ingred_sel.map { |span| span.text }.map { |el| el.split(' ').reject { |el| el == "\n" || el.include?(' ') }.join(' ') }
       ingreds = ingreds.reject { |el| el.length <= 1 || el.include?('ingredients') }
       num_ingred = ingreds.length 
-      # ingreds = 
 
       directions = dir_sel.map { |span| span.text }
       directions = directions.reject { |el| el.length <= 1 }
 
       cal = doc.css('span.calorie-count > span:first-child').text
 
-      # debugger
-      unless img_src && num_ingred > 1
+      unless img_src.length > 1 && num_ingred > 1
         debugger
         next 
       end
@@ -104,8 +110,7 @@ class ScrapersController < ApplicationController
                           keywords: words, num_ingred: num_ingred, 
                           num_dir: directions.length, time: time, cal: cal })
       
-      if recipe.save
-        
+      if recipe.save       
         ingredient = Ingredient.create({items: ingreds, main: url.category,
                                   recipe_id: recipe.id})
         @recipes << recipe 

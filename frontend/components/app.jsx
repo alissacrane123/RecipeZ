@@ -11,13 +11,19 @@ import {
 
 import HomeContainer from './home/home_container';
 import RecipeContainer from './recipes/recipes_index_cont';
+import NavbarContainer from './navbar/navbar_container';
+import ModalContainer from './modal/modal_container';
 
 const App = () => (
   <div id="app">
+    <ModalContainer />
+    <NavbarContainer />
+
     <Switch>
-      <Route path="/search/results" component={RecipeContainer} />
+      <Route path="/search/:searchQuery" component={RecipeContainer} />
       <Route exact path="/" component={HomeContainer} />
     </Switch>
+    
   </div>
 );
 
