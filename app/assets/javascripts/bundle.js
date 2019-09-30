@@ -1276,11 +1276,9 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var errors = this.props.errors.join('. ');
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: "login-form"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        onSubmit: this.handleSubmit
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Log in"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "session"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Log in"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         placeholder: "email address",
         value: this.state.email,
         onChange: this.handleChange('email')
@@ -1290,11 +1288,10 @@ function (_React$Component) {
         onChange: this.handleChange('password')
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "errors-cont"
-      }, errors), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        className: "login-button",
-        type: "submit",
-        value: "Login"
-      })));
+      }, errors), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.handleSubmit,
+        className: "add"
+      }, "Sign Up"));
     }
   }]);
 
@@ -1381,7 +1378,7 @@ function (_React$Component) {
     value: function render() {
       var errors = this.props.errors.join('. ');
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "signup"
+        className: "session"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Sign Up"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "names"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {

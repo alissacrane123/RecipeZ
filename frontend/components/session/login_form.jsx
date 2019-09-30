@@ -22,21 +22,21 @@ class LoginForm extends React.Component {
     let errors = this.props.errors.join('. ');
 
     return (
-      <div id="login-form">
-        <form onSubmit={this.handleSubmit}>
-          <h3>Log in</h3>
+      <form className="session">
+        <h4>Log in</h4>
 
-          <input placeholder="email address" value={this.state.email} onChange={this.handleChange('email')} />
+        <input placeholder="email address" value={this.state.email} onChange={this.handleChange('email')} />
 
-          <input placeholder="password" value={this.state.password} onChange={this.handleChange('password')} />
+        <input placeholder="password" value={this.state.password} onChange={this.handleChange('password')} />
 
-          <div className="errors-cont">
-            {errors}
-          </div>
+        <div className="errors-cont">
+          {errors}
+        </div>
 
-          <input className="login-button" type="submit" value="Login" />
-        </form>
-      </div>
+        <button onClick={this.handleSubmit} className="add">Sign Up</button>
+        {/* <input className="login-button" type="submit" value="Login" /> */}
+      </form>
+
     )
   }
 }

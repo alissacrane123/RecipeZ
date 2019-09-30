@@ -22,7 +22,7 @@ class SignupForm extends React.Component {
     let errors = this.props.errors.join('. ');
 
     return (
-      <form className="signup">
+      <form className="session">
 
         <h4>Sign Up</h4>
 
