@@ -9,8 +9,8 @@ const msp = (state, ownProps) => {
   // debugger
   return {
     recipe_id: ownProps.match.params["recipeId"],
-    recipe: state.entities.recipes[recipe_id]
-    // ingredient: state.entities.ingredients
+    recipe: state.entities.recipes[recipe_id],
+    ingredient: state.entities.ingredients[recipe_id]
   }
 }
 

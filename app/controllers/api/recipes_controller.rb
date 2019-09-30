@@ -1,20 +1,28 @@
 class Api::RecipesController < ApplicationController
 
   def index
-    # debugger
+
     if params[:filters]
-      search_word = params[:filters][:main].split(' ').first
-      max_ingred = params[:filters][:num_ingred].to_i
+      search_word = params[:filters][:main].split(' ').first if params[:filters][:main]
+      ingreds = params[:filters][:ingreds].split('+').map { |el| "%#{el}%"} if params[:filters][:ingreds]
+      query = (["keywords like ?"] * ingreds.length ).join(" AND ") if params[:filters][:ingreds]
     end
-    # debugger
-    if search_word && max_ingred != 0
-      @recipes = Recipe.where(["main = ? AND num_ingred < ?", search_word, max_ingred])
+
+    if search_word && ingreds
+      # query = (["keywords like ?"] * ingreds.length ).join(" AND ")
+      ingreds = Ingredient.includes(:recipe).where(query, *ingreds)
+      recipes1 = ingreds.map(&:recipe)
+      recipes2 = Recipe.where(["title like ?", "%#{search_word}%"])
+      @recipes = recipes1.select { |rec| recipes2.map(&:id).include?(rec.id) }
     elsif search_word
-      @recipes = Recipe.where(["main = ?", search_word])
-    elsif max_ingred != 0
-      @recipes = Recipe.where(["num_ingred < ?", max_ingred])
+      @recipes = Recipe.where(["title like ?", "%#{search_word}%"])
+    elsif ingreds
+      # debugger
+      # query = (["keywords like ?"] * ingreds.length ).join(" AND ")
+      ingreds = Ingredient.includes(:recipe).where(query, *ingreds)
+      @recipes = ingreds.map(&:recipe)
     else
-      @recipes = Recipe.all.shuffle.take(20)
+      @recipes = Recipe.includes(:ingredient).all.shuffle.take(20)
     end
 
     # render "api/recipes/recipe"
@@ -38,3 +46,4 @@ class Api::RecipesController < ApplicationController
     params.require(:recipe).permit(:title, :ingreds, :directions, :img_src)
   end
 end
+

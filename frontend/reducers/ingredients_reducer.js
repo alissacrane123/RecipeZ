@@ -9,7 +9,7 @@ const ingredientsReducer = (state = {}, action) => {
     //   // debugger
     //   return action.recipes;
     case RECEIVE_RECIPE:
-      debugger
+      // debugger
       return { [action.payload.ingredient.recipe_id]: action.payload.ingredient };
       // return Object.assign(nextState, newRecipe);
     default:

@@ -11,16 +11,16 @@ class RecipesIndex extends React.Component {
     let main = queries[0].slice(2);
     let ingred = queries[1].slice(2);
 
-    this.props.fetchRecipes({ main: main, num_ingred: ingred});
+    this.props.fetchRecipes({ main: main, ingreds: ingred});
   }
 
   render() {
-    // debugger
-    let recipes = this.props.recipes;
+    let {recipes, history} = this.props;
+    // let recipes = this.props.recipes;
 
     // recipes = recipes.map { |rec| rec.title };
     recipes = recipes.map(rec => (
-      <RecipeItem recipe={rec} /> ));
+      <RecipeItem key={rec.id} recipe={rec} /> ));
 
     return (
       <div id="index">

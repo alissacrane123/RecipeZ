@@ -10,7 +10,13 @@ Rails.application.routes.draw do
   # get '/urlscrap' => 'scrapers#urlscrap'
   get '/recipescrap' => 'scrapers#recipe_scrap'
 
-
+  # namespace :api, defaults: { format: :json } do 
+  #   resources :recipes do 
+  #     collection do  
+  #       get :search 
+  #     end
+  #   end
+  # end
 
   namespace :api, defaults: {format: :json} do
     resources :recipes, only: [:index, :show, :create, :update, :destroy]

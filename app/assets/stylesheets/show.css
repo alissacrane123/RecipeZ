@@ -1,0 +1,94 @@
+#recipe {
+  min-height: 100%;
+}
+
+.recipe {
+  margin: 15vh 45% 10vh 10%;
+}
+
+.grocery {
+  position: fixed;
+  top: 15vh;
+  right: 0;
+  border-radius: 10px;
+  box-shadow: 0 0 18px #c5c1c1;
+  width: 30%;
+  padding: 2vh;
+  margin-right: 10%;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h4 {
+  Font-Family: 'Roboto Condensed', Sans-Serif;
+  font-size: 3vh;
+    margin: 0 0 3vh 0;
+}
+
+h1 {
+  font-size: 5vh;
+  text-align: center;
+
+}
+
+.recipe > img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.recipe > header {
+  padding: 2vh;
+  margin: 2vh 0 0 0; 
+}
+
+#ingred, #dir {
+  padding: 2vh 0 0 2vh;
+  margin: 2vh 15vh 2vh 0;
+}
+
+.recipe li, .grocery li {
+  display: flex;
+  flex-direction: row;
+  min-height: 5vh;
+  margin: 1vh 0 1vh 0;
+}
+
+.recipe li > button, .grocery li > button {
+    border: 1px solid gray;
+    display: inline-block;
+    border-radius: 100%;
+    text-align: center;
+    padding: 0;
+    min-width: 4vh;
+    height: 4vh;
+    margin: auto 0 auto 0;
+}
+
+.recipe p, .grocery p {
+  margin: auto 0 auto 2vh;
+}
+
+.recipe ol {
+  list-style-type: decimal; 
+}
+
+.grocery h4 {
+  text-align: center;
+  padding-top: 3vh;
+}
+
+.grocery ul {
+  padding: 0 3vh 3vh 3vh;
+}
+
+button.add {
+  text-align: center;
+  font-size: 2.5vh;
+  border-radius: 30px;
+  width: 200px;
+  color: white;
+  margin: auto auto 3vh auto;
+  padding: 1vh;
+  background-color: #8860d0;
+}

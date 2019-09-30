@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 #index {
   height: 100%;
   display: flex;
@@ -17,29 +21,37 @@
   padding-right: 3vh;
 }
 
-#items div {	
+#rec-item:hover {
+  box-shadow: 0px 0px 18px #b2afaf;
+}
+
+#rec-item {	
     flex: 1 0 25vh;
-    height: 23vh;
-    padding: 15px;
+    height: 30vh;
+    padding: 1vh;
     margin-left: 3vh;
     margin-top: 3vh;
-    background: purple;
+    box-shadow: 0px 0px 18px #b2afaf;
+    /* background: purple; */
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
 }
 
-#rec-item {
-  height: 100%;
-  width: 100%;
+#rec-item > div {
+  height: 18vh;
   overflow: hidden;
-  /* padding: none; */
-}
-
-#rec-item {
-  height: 100%;
-  width: 100%;
-  over
+  border-radius: 10px;
 }
 
 #rec-item img {
   width: 100%;
   height: auto;
+  min-height: 100%;
+}
+
+#rec-item h4 {
+  padding: 1vh;
+  text-align: center;
+   font-size: 2vh;
 }

@@ -22,31 +22,30 @@ class SignupForm extends React.Component {
     let errors = this.props.errors.join('. ');
 
     return (
-      <div id="signup-form">
-        <form  onSubmit={this.handleSubmit}>
+      <form className="signup">
 
-          <h3>Sign Up</h3>
+        <h4>Sign Up</h4>
 
-          <div className="signup-names">
-            <input onChange={this.handleChange('fname')} value={this.state.fname} placeholder="first" />
-            <input onChange={this.handleChange('lname')} value={this.state.lname} placeholder="last" />
-          </div>
+        <div className="names">
+          <input onChange={this.handleChange('fname')} value={this.state.fname} placeholder="first" />
+          <input onChange={this.handleChange('lname')} value={this.state.lname} placeholder="last" />
+        </div>
 
 
-          <input onChange={this.handleChange('email')} value={this.state.email} placeholder="email" />
+        <input onChange={this.handleChange('email')} value={this.state.email} placeholder="email" />
 
-          <input onChange={this.handleChange('password')} value={this.state.password} placeholder="password" />
+        <input onChange={this.handleChange('password')} value={this.state.password} placeholder="password" type="password"/>
 
-          <input onChange={this.handleChange('city')} value={this.state.city} placeholder="city" />
+        <input onChange={this.handleChange('city')} value={this.state.city} placeholder="city" />
 
-          <div className="errors-cont">
-            {errors}
-          </div>
+        <div className="errors-cont">
+          {errors}
+        </div>
 
-          <input className="signup-button" type="submit" value="signup" />
-        </form>
+        <button onClick={this.handleSubmit} className="add">Sign Up</button>
+        {/* <input className="signup-button" type="submit" value="signup" /> */}
+      </form>
 
-      </div>
     )
   }
 }

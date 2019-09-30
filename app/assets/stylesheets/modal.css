@@ -12,16 +12,62 @@
   background: white;
   box-sizing: border-box;
   position: absolute;
-  width: 500px;
-  height: 450px;
+    max-width: 450px;
+    min-height: 450px;
   border-radius: 4px;
   overflow: scroll;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
+  padding: 5vh 7vh 5vh 7vh;
 }
 
-.modal-child2 {
-  height: 650px;
+form.signup {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+form.signup h4 {
+  font-size: 4vh;
+  color: #8860d0;
+}
+
+form.signup input {
+  outline: none;
+  border: none;
+  padding: 2vh 1vh 2vh 1vh;
+  font-weight: 0;
+  border-bottom: 1px solid rgb(202, 198, 198);
+  font-size: 17px;
+  margin-bottom: 2vh;
+  text-align: center;
+  color: gray;
+}
+
+form.signup input:focus{
+  border-bottom: 2px solid #8860d0;     /* oranges! yey */
+}
+
+div.names {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+div.names > input {
+  width: 45%;
+}
+
+::placeholder {
+  color: rgb(163, 158, 158);
+}
+
+form.signup button {
+  margin: 4vh auto 0 auto;
+  height: 7vh;
+  width: 20vh;
 }

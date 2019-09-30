@@ -264,7 +264,7 @@ var App = function App() {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "app"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_modal_container__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_navbar_navbar_container__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: "/recipe/:recipeId",
+    path: "/recipes/:recipeId",
     component: _recipes_recipe_show_cont__WEBPACK_IMPORTED_MODULE_7__["default"]
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "/search/:searchQuery",
@@ -465,13 +465,11 @@ function (_React$Component) {
           onClick: function onClick(e) {
             return e.stopPropagation();
           }
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "modal-form"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_session_signup_form__WEBPACK_IMPORTED_MODULE_2__["default"], {
           signup: signup,
           closeModal: closeModal,
           errors: errors
-        }))));
+        })));
       }
     }
   }]);
@@ -686,12 +684,12 @@ var RecipeItem = function RecipeItem(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "rec-item",
     onClick: function onClick() {
-      return props.history.push("/recipe/".concat(recipe.id));
+      return props.history.push("/recipes/".concat(recipe.id));
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
     src: recipe.img_src,
     alt: ""
-  })));
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, recipe.title));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(RecipeItem));
@@ -711,6 +709,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -719,9 +725,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -734,22 +740,88 @@ var RecipeShow =
 function (_React$Component) {
   _inherits(RecipeShow, _React$Component);
 
-  function RecipeShow() {
+  function RecipeShow(props) {
+    var _this;
+
     _classCallCheck(this, RecipeShow);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(RecipeShow).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(RecipeShow).call(this, props));
+    _this.state = {
+      groceries: []
+    };
+    _this.addItem = _this.addItem.bind(_assertThisInitialized(_this));
+    _this.removeItem = _this.removeItem.bind(_assertThisInitialized(_this));
+    return _this;
   }
 
   _createClass(RecipeShow, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      // debugger
       this.props.fetchRecipe(Number(this.props.recipe_id));
+    }
+  }, {
+    key: "removeItem",
+    value: function removeItem(e) {
+      e.preventDefault();
+      var remove_item = e.currentTarget.value;
+      var new_groc = this.state.groceries.filter(function (item) {
+        return item != remove_item;
+      });
+      this.setState({
+        groceries: [new_groc]
+      });
+      debugger;
+    }
+  }, {
+    key: "addItem",
+    value: function addItem(e) {
+      e.preventDefault();
+      var item = e.currentTarget.value; // debugger
+
+      this.setState({
+        groceries: [].concat(_toConsumableArray(this.state.groceries), [item])
+      });
     }
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "recipe");
+      var _this2 = this;
+
+      var _this$props = this.props,
+          recipe = _this$props.recipe,
+          ingredient = _this$props.ingredient;
+      if (!recipe || !ingredient) return null;
+      var ingreds = ingredient.items.map(function (item) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          onClick: _this2.addItem,
+          value: item
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "+")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, item));
+      });
+      var dirs = recipe.directions.map(function (dir) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, dir);
+      });
+      var groc = this.state.groceries.map(function (item) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          onClick: _this2.removeItem,
+          value: item
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "-")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, item));
+      });
+      if (this.state.groceries.length < 1) groc = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null);
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "recipe"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "recipe"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: recipe.img_src
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, recipe.title.toUpperCase())), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
+        id: "ingred"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Ingredients"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, ingreds)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
+        id: "dir"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Directions"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ol", null, dirs))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "grocery"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Groceries needed"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, groc), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "add"
+      }, "Add to Shopping List")));
     }
   }]);
 
@@ -781,8 +853,8 @@ var msp = function msp(state, ownProps) {
 
   return {
     recipe_id: ownProps.match.params["recipeId"],
-    recipe: state.entities.recipes[recipe_id] // ingredient: state.entities.ingredients
-
+    recipe: state.entities.recipes[recipe_id],
+    ingredient: state.entities.ingredients[recipe_id]
   };
 };
 
@@ -853,17 +925,20 @@ function (_React$Component) {
       var ingred = queries[1].slice(2);
       this.props.fetchRecipes({
         main: main,
-        num_ingred: ingred
+        ingreds: ingred
       });
     }
   }, {
     key: "render",
     value: function render() {
-      // debugger
-      var recipes = this.props.recipes; // recipes = recipes.map { |rec| rec.title };
+      var _this$props = this.props,
+          recipes = _this$props.recipes,
+          history = _this$props.history; // let recipes = this.props.recipes;
+      // recipes = recipes.map { |rec| rec.title };
 
       recipes = recipes.map(function (rec) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_recipe_item__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          key: rec.id,
           recipe: rec
         });
       });
@@ -962,6 +1037,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -994,20 +1077,41 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Search).call(this, props));
     _this.state = {
       main: '',
-      num_ingred: "How difficult?",
+      ingred: [],
+      current: '',
       num_dir: null,
       df: false
     };
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
+    _this.handleChange2 = _this.handleChange2.bind(_assertThisInitialized(_this));
+    _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_this));
     _this.handleSelect = _this.handleSelect.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(Search, [{
+    key: "handleClick",
+    value: function handleClick(e) {
+      e.preventDefault();
+      var new_ingred = this.state.current;
+      this.setState({
+        ingred: [].concat(_toConsumableArray(this.state.ingred), [new_ingred])
+      });
+      this.setState({
+        current: ''
+      });
+    }
+  }, {
+    key: "handleChange2",
+    value: function handleChange2(e) {
+      this.setState({
+        current: e.target.value
+      });
+    }
+  }, {
     key: "handleSelect",
     value: function handleSelect(e) {
-      // let num = Number(e.target.value)
       this.setState({
         num_ingred: e.target.value
       });
@@ -1015,6 +1119,7 @@ function (_React$Component) {
   }, {
     key: "handleChange",
     value: function handleChange(e) {
+      // debugger
       this.setState({
         main: e.target.value
       });
@@ -1022,41 +1127,39 @@ function (_React$Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
-      e.preventDefault();
+      e.preventDefault(); // debugger
+
       this.props.fetchRecipes(this.state);
       var query = this.state.main;
-      var num = this.state.num_ingred; // debugger
+      var ingreds = this.state.ingred.join('+'); // debugger
 
-      num = typeof num === 'string' ? 0 : num;
-      this.props.history.push("/search/m=".concat(query, "&n=").concat(num));
+      this.props.history.push("/search/m=".concat(query, "&n=").concat(ingreds));
     }
   }, {
     key: "render",
     value: function render() {
+      var ingreds = this.state.ingred.map(function (ingred) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "x  ".concat(ingred));
+      });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: "search"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        onSubmit: this.handleSubmit
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        id: "search",
+        className: "search"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         onChange: this.handleChange,
-        placeholder: "What are you craving?",
+        placeholder: "What are you in the mood for?",
         value: this.state.main
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-        value: this.state.num_ingred,
-        onChange: this.handleSelect
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "200"
-      }, "How difficult?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "10"
-      }, "Easy"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "20"
-      }, "Medium"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "200"
-      }, "Hard"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        onChange: this.handleChange2,
+        placeholder: "Ingredients",
+        value: this.state.current
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.handleClick
+      }, "+")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "submit",
-        value: "Search"
-      })));
+        value: "Search",
+        onClick: this.handleSubmit
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, ingreds));
     }
   }]);
 
@@ -1277,12 +1380,10 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var errors = this.props.errors.join('. ');
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: "signup-form"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        onSubmit: this.handleSubmit
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Sign Up"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "signup-names"
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "signup"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Sign Up"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "names"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         onChange: this.handleChange('fname'),
         value: this.state.fname,
@@ -1298,18 +1399,18 @@ function (_React$Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         onChange: this.handleChange('password'),
         value: this.state.password,
-        placeholder: "password"
+        placeholder: "password",
+        type: "password"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         onChange: this.handleChange('city'),
         value: this.state.city,
         placeholder: "city"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "errors-cont"
-      }, errors), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        className: "signup-button",
-        type: "submit",
-        value: "signup"
-      })));
+      }, errors), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.handleSubmit,
+        className: "add"
+      }, "Sign Up"));
     }
   }]);
 
@@ -1438,7 +1539,7 @@ var ingredientsReducer = function ingredientsReducer() {
     //   // debugger
     //   return action.recipes;
     case _actions_recipe_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_RECIPE"]:
-      debugger;
+      // debugger
       return _defineProperty({}, action.payload.ingredient.recipe_id, action.payload.ingredient);
     // return Object.assign(nextState, newRecipe);
 
