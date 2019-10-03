@@ -14,6 +14,12 @@
 #
 
 class User < ApplicationRecord
+  has_many :weekly_plans, foreign_key: :user_id, class_name: :WeeklyPlan 
+  has_many :meals, through: :weekly_plans, source: :meals 
+  has_many :recipes, through: :meals, source: :recipe 
+  has_many :recipe_saves, foreign_key: :user_id, class_name: :SavedRecipe
+  has_many :saved_recipes, through: :recipe_saves, source: :recipe 
+
     attr_reader :password
 
   validates :email, :password_digest, :session_token, presence: true

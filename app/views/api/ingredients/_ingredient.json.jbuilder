@@ -1,1 +1,1 @@
-json.extract! ingredient, :id, :items, :main, :df, :gf, :nf, :vegan, :veget, :recipe_id, :keywords
+json.extract! ingredient, :id, :items, :main, :vegan, :veget, :recipe_id, :keywords

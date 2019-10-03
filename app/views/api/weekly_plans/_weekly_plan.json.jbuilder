@@ -1,0 +1,1 @@
+json.extract! weekly_plan, :id, :month, :year, :start_date, :user_id 

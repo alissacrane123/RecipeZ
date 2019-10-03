@@ -34,6 +34,7 @@ module ScrapersHelper
   def img_selector(doc, url)
     selectors = ['div.image-container div:first-child', 'img.rec-photo']
 
+    # 'img.grid-col__rec-image'
     selectors.each_with_index do |sel, i|    
       if doc.css(sel).length > 0 && i == 1
         img_src = doc.css(sel).map { |img| img['src'] }        
@@ -65,8 +66,18 @@ module ScrapersHelper
     return false 
   end
 
+  def serving_selector(doc, url)
+    selectors = ['span.servings-count:first-child']
 
+    selectors.each_with_index do |sel, i|    
+      if doc.css(sel).length > 0
+        servings = doc.css(sel).text.to_i
+        return servings if servings
+      end
+    end
 
+    return false 
+  end
 
 
   def ingred_parse(ingreds)

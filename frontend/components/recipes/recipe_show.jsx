@@ -32,20 +32,20 @@ class RecipeShow extends React.Component{
     if (!recipe || !ingredient ) return null;
 
     let ingreds = ingredient.items.map(item => (
-      <li>
+      <li key={item}>
         <button onClick={this.addItem} value={item}><span>+</span></button>
         <p>{item}</p>
       </li>))
 
-    let dirs = recipe.directions.map(dir => <li>{dir}</li>)
+    let dirs = recipe.directions.map(dir => <li key={dir}>{dir}</li>)
 
     let groc = this.state.groceries.map(item => (
-      <li>
+      <li key={item}>
         <button onClick={this.removeItem} value={item}><span>-</span></button>
         <p>{item}</p>
       </li>))
 
-    if (this.state.groceries.length < 1) groc = <li></li>
+    if (this.state.groceries.length < 1) groc = <li key="1"></li>
 
     return (
       <div id="recipe">

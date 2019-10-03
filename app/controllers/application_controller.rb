@@ -1,10 +1,17 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  helper_method :current_user, :logged_in?
+  helper_method :current_user, :logged_in?, :monday_date
     
 
   private
+
+  def monday_date
+    date = Date.parse("Monday")
+    delta = date < Date.today ? 0 : 7
+    monday = date - delta 
+    monday.strftime("%d/%m/%Y")
+  end
 
   def current_user
     return nil unless session[:session_token]

@@ -10,36 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_25_212454) do
+ActiveRecord::Schema.define(version: 2019_10_01_215120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "ingredients", force: :cascade do |t|
-    t.text "items", default: [], null: false, array: true
     t.string "main", null: false
-    t.boolean "df", default: false
-    t.boolean "gf", default: false
-    t.boolean "nf", default: false
     t.boolean "vegan", default: false
     t.boolean "veget", default: false
     t.integer "recipe_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "keywords", null: false
-    t.index ["df"], name: "index_ingredients_on_df"
-    t.index ["gf"], name: "index_ingredients_on_gf"
+    t.text "items", default: [], null: false, array: true
     t.index ["keywords"], name: "index_ingredients_on_keywords"
     t.index ["main"], name: "index_ingredients_on_main"
-    t.index ["nf"], name: "index_ingredients_on_nf"
     t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
     t.index ["vegan"], name: "index_ingredients_on_vegan"
     t.index ["veget"], name: "index_ingredients_on_veget"
   end
 
+  create_table "meals", force: :cascade do |t|
+    t.integer "weekly_plan_id", null: false
+    t.string "date", null: false
+    t.integer "recipe_id", null: false
+    t.text "grocery_list", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["weekly_plan_id"], name: "index_meals_on_weekly_plan_id"
+  end
+
   create_table "nutritions", force: :cascade do |t|
     t.string "name"
-    t.text "description", default: [], array: true
     t.integer "nbd_no"
     t.integer "grams"
     t.integer "cals"
@@ -52,6 +55,7 @@ ActiveRecord::Schema.define(version: 2019_09_25_212454) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "kind"
+    t.string "description"
     t.index ["description"], name: "index_nutritions_on_description"
     t.index ["name"], name: "index_nutritions_on_name"
   end
@@ -70,12 +74,21 @@ ActiveRecord::Schema.define(version: 2019_09_25_212454) do
     t.integer "time"
     t.integer "cal"
     t.text "keywords", null: false
+    t.integer "servings"
     t.index ["cal"], name: "index_recipes_on_cal"
     t.index ["keywords"], name: "index_recipes_on_keywords"
     t.index ["main"], name: "index_recipes_on_main"
     t.index ["num_dir"], name: "index_recipes_on_num_dir"
     t.index ["num_ingred"], name: "index_recipes_on_num_ingred"
     t.index ["time"], name: "index_recipes_on_time"
+  end
+
+  create_table "saved_recipes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "recipe_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "recipe_id"], name: "index_saved_recipes_on_user_id_and_recipe_id", unique: true
   end
 
   create_table "urls", force: :cascade do |t|
@@ -97,6 +110,17 @@ ActiveRecord::Schema.define(version: 2019_09_25_212454) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["session_token"], name: "index_users_on_session_token"
+  end
+
+  create_table "weekly_plans", force: :cascade do |t|
+    t.string "month", null: false
+    t.string "year", null: false
+    t.string "start_date", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["start_date"], name: "index_weekly_plans_on_start_date"
+    t.index ["user_id"], name: "index_weekly_plans_on_user_id"
   end
 
 end

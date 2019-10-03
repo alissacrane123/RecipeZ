@@ -9,13 +9,14 @@
 #  url_id     :integer          not null
 #  directions :text             default([]), is an Array
 #  img_src    :string           not null
-#  keywords   :text             default([]), is an Array
 #  main       :string           not null
 #  rating     :integer
 #  num_ingred :integer          not null
 #  num_dir    :integer          not null
 #  time       :integer
 #  cal        :integer
+#  keywords   :text             not null
+#  servings   :integer
 #
 
 class Recipe < ApplicationRecord
@@ -23,5 +24,7 @@ class Recipe < ApplicationRecord
   validates :url_id, :img_src, presence: true, uniqueness: true
   # validates :ingreds, :directions, presence: true, length: { minimum: 1 }
 
-  has_one :ingredient, foreign_key: :recipe_id, class_name: :Ingredient 
+  has_one :ingredient, foreign_key: :recipe_id, class_name: :Ingredient
+  has_many :meals, foreign_key: :recipe_id, class_name: :Meal 
+   
 end

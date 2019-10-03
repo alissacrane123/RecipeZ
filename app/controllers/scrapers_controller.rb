@@ -5,7 +5,9 @@ class ScrapersController < ApplicationController
     require 'open-uri'
 
     failures = []
-    @categories = ['salad', 'pasta', 'chicken', 'vegan', 'fish'].each do |categ|
+    @categories = ['salad', 'pasta', 'chicken', 'vegan', 'fish', 'beef', 
+                  'soup', 'tacos', 'vegetarian', 'steak', 'dessert',
+                  'chocolate', 'healthy', 'fried', 'burger'].each do |categ|
 
       doc = Nokogiri::HTML(open("https://www.allrecipes.com/search/results/?wt=#{categ}&sort=re", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
 
@@ -44,6 +46,7 @@ class ScrapersController < ApplicationController
       time = 0
       words = ''
       ingred_words = ''
+      servings = 0
 
       # next if url.url.include?('video')
 
@@ -78,7 +81,6 @@ class ScrapersController < ApplicationController
 
       # time
 
-
       time_values = helpers.time_selector(doc, url)
       if time_values
         time_arr = time_values[0]
@@ -86,6 +88,12 @@ class ScrapersController < ApplicationController
       else 
         time = 0
       end
+
+      # servings
+
+      # servings = helpers.serving_selector(doc, url)
+      # servings = servings ? servings : 0
+
 
       ingreds = ingred_sel.map { |span| span.text }.map { |el| el.split(' ').reject { |el| el == "\n" || el.include?(' ') }.join(' ') }
       ingreds = ingreds.reject { |el| el.length <= 1 || el.include?('ingredients') }
@@ -103,18 +111,20 @@ class ScrapersController < ApplicationController
         next 
       end
 
+      # vegan / vegetarian
+
+      vegan = url.category == 'vegan' ? true : false 
+      vegetarian = url.category == 'vegetarian' ? true : false 
+
       recipe = Recipe.new({title: title, url_id: url.id, main: url.category, 
                           directions: directions, img_src: img_src,
                           keywords: words, num_ingred: num_ingred, 
-                          num_dir: directions.length, time: time, cal: cal })
+                          num_dir: directions.length, time: time, cal: cal,
+                          servings: servings }) 
       
-      if recipe.save  && url.category == 'vegan'     
+      if recipe.save
         ingredient = Ingredient.create({items: ingreds, keywords: ingred_words, main: url.category,
-                                  recipe_id: recipe.id, vegan: true})
-        @recipes << recipe 
-      elsif recipe.save
-        ingredient = Ingredient.create({items: ingreds, keywords: ingred_words, main: url.category,
-                                  recipe_id: recipe.id})
+                                  recipe_id: recipe.id, vegan: vegan, veget: vegetarian})
         @recipes << recipe
       else 
         # debugger

@@ -1,0 +1,1 @@
+json.extract! meal, :id, :weekly_plan_id, :date, :recipe_id, :grocery_list

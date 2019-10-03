@@ -9,13 +9,11 @@ class NutritionScrapersController < ApplicationController
       names = array[3].split(',')
       name = names.shift.downcase
       # debugger
-      if names.length > 0
-        kind = names.shift.downcase
-      end
-      desc = []
-      if desc.length > 0
-        desc = names.map { |el| el.downcase }
-      end
+
+      kind = names.length > 0 ? names.shift.downcase : ''
+
+      desc = names.length > 0 ? names.map { |el| el.downcase }.join(' ') : ''
+      
       nutrition = array[4].split('^')
       water = nutrition[1].to_i
       cals = nutrition[2].to_i
